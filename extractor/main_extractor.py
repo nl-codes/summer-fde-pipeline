@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class MainExtractor:
-    def __init__(self, config_path="config.yaml"):
+    def __init__(self, config_path="extractor\config.yaml"):
         self.config = self.load_config(config_path)
         self.setup_extractors()
 
