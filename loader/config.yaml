@@ -1,0 +1,26 @@
+database:
+    host: ${DB_HOST}
+    database: FDE
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
+    port: ${DB_PORT}
+
+schemas:
+    landing_schema: landing
+    staging_schema: staging
+    transform_schema: transform
+    target_schema: target
+
+entities:
+    products:
+        staging_view: stg_products
+        temp_table: tmp_products
+        target_table: dim_products
+    users:
+        staging_view: stg_users
+        temp_table: tmp_users
+        target_table: dim_users
+    sales:
+        staging_view: stg_sales
+        temp_table: tmp_sales
+        target_table: fact_sales
