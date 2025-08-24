@@ -4,7 +4,8 @@ from string import Template
 
 import yaml
 from dotenv import load_dotenv
-from database_connector import DatabaseConnector
+
+from extractor.database_connector import DatabaseConnector
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -55,20 +56,20 @@ def archive_table(conn, archive_table, source_table):
 
     source_columns = get_table_columns(conn, source_table, source_schema)
 
-
     insert_cols = ", ".join(source_columns + ["archived_at"])
     select_cols = ", ".join(source_columns) + ", CURRENT_TIMESTAMP"
 
     query = f"""
               INSERT INTO {archive_schema}.{archive_table} ({insert_cols})
               SELECT {select_cols} FROM {source_schema}.{source_table}
+              ON CONFLICT DO NOTHING;
               """
 
     execute_query(conn, query)
 
 
-if __name__ == "__main__":
-    database_connector=DatabaseConnector(load_config())
+def main():
+    database_connector = DatabaseConnector(load_config())
     conn = database_connector.get_connection()
     landing_tables_from_s3 = load_config()["s3"]["files"].values()
     landing_tables_from_api = load_config()["api"]["endpoints"].values()
@@ -76,10 +77,14 @@ if __name__ == "__main__":
     landing_tables = list(landing_tables_from_s3) + list(landing_tables_from_api)
 
     for table in landing_tables:
-        archive_table_name=f"archive_{table.lower()}"
+        archive_table_name = f"archive_{table.lower()}"
         try:
             archive_table(conn, archive_table_name, table)
             logging.info(f"Archived {table}")
         except Exception as e:
             logging.error(f"Failed to archive {table}: {str(e)}")
     conn.close()
+
+
+if __name__ == "__main__":
+    main()

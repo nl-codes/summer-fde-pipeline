@@ -6,11 +6,11 @@ import yaml
 from dotenv import load_dotenv
 from sqlalchemy import text
 
-from api_extractor import APIExtractor
-from csv_extractor import CSVExtractor
-from database_connector import DatabaseConnector
-from json_extractor import JSONExtractor
-from s3_extractor import PublicS3Extractor
+from extractor.api_extractor import APIExtractor
+from extractor.csv_extractor import CSVExtractor
+from extractor.database_connector import DatabaseConnector
+from extractor.json_extractor import JSONExtractor
+from extractor.s3_extractor import PublicS3Extractor
 
 load_dotenv()
 

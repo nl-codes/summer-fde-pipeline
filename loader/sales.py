@@ -1,5 +1,5 @@
 from psycopg2 import sql
-from utils import get_db_connection, execute_query, get_schemas, get_entities
+from loader.utils import get_db_connection, execute_query, get_schemas, get_entities
 
 ENTITY = 'sales'
 
