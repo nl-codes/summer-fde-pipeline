@@ -1,0 +1,37 @@
+# Welcome to your prefect.yaml file! You can use this file for storing and managing
+# configuration for deploying your flows. We recommend committing this file to source
+# control along with your flow code.
+
+# Generic metadata about this project
+name: summer-fde-pipeline
+prefect-version: 3.4.10
+
+# build section allows you to manage and build docker images
+build: null
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+    - prefect.deployments.steps.set_working_directory:
+          directory: E:\HCK\L5Summer\de\summer-fde-pipeline
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+    - name: fde-pipeline
+      version: null
+      tags: []
+      concurrency_limit: null
+      description: null
+      entrypoint: orchestrator/pipeline.py:fde_pipeline
+      parameters: {}
+      work_pool:
+          name: FDE
+          work_queue_name: null
+          job_variables: {}
+      schedules:
+          - cron: 48 02 * * *
+            timezone: null
+            day_or: true
+            active: true
